@@ -233,6 +233,16 @@ declare class Neode {
    */
   findById<T>(label: string, id: number): Promise<Neode.Node<T>>;
 
+
+  /**
+   * Find a Node by it's internal node IDs
+   *
+   * @param  {String} model
+   * @param  {array}    ids
+   * @return {Promise}
+   */
+  findByIds<T>(label: string, ids: number[]): Promise<Neode.NodeCollection>;
+
   /**
    * Find a Node by properties
    *
@@ -430,7 +440,7 @@ declare namespace Neode {
   interface NodesNodeProperties extends BaseRelationshipNodeProperties {
     type: 'nodes'
   }
-  
+
   interface NodeNodeProperties extends BaseRelationshipNodeProperties {
     type: 'node'
   }
@@ -1093,8 +1103,8 @@ declare namespace Neode {
      * @return {mixed}
      */
     find<U>(fn: (value: Node<any>, index: number, array: Array<Node<any>>) => U): Node<U>;
-    
-    
+
+
     /**
      * Run a function on all values
      * @param  {Function} fn

@@ -26,6 +26,10 @@ var _FindById = require('./Services/FindById');
 
 var _FindById2 = _interopRequireDefault(_FindById);
 
+var _FindByIds = require('./Services/FindByIds');
+
+var _FindByIds2 = _interopRequireDefault(_FindByIds);
+
 var _FindWithinDistance = require('./Services/FindWithinDistance');
 
 var _FindWithinDistance2 = _interopRequireDefault(_FindWithinDistance);
@@ -171,9 +175,22 @@ var Queryable = function () {
         }
 
         /**
+         * Find a Node by it's internal node IDs
+         *
+         * @param  {String} model
+         * @param  {array}    ids
+         * @return {Promise}
+         */
+
+    }, {
+        key: 'findByIds',
+        value: function findByIds(ids) {
+            return (0, _FindByIds2.default)(this._neode, this, ids);
+        }
+
+        /**
          * Find a Node by properties
          *
-         * @param  {String} label
          * @param  {mixed}  key     Either a string for the property name or an object of values
          * @param  {mixed}  value   Value
          * @return {Promise}

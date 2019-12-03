@@ -3,6 +3,7 @@ import Create from './Services/Create';
 import DeleteAll from './Services/DeleteAll';
 import FindAll from './Services/FindAll';
 import FindById from './Services/FindById';
+import FindByIds from './Services/FindByIds';
 import FindWithinDistance from './Services/FindWithinDistance';
 import First from './Services/First';
 import MergeOn from './Services/MergeOn';
@@ -108,10 +109,21 @@ export default class Queryable {
         return FindById(this._neode, this, id);
     }
 
+
+    /**
+     * Find a Node by it's internal node IDs
+     *
+     * @param  {String} model
+     * @param  {array}    ids
+     * @return {Promise}
+     */
+    findByIds(ids) {
+        return FindByIds(this._neode, this, ids);
+    }
+
     /**
      * Find a Node by properties
      *
-     * @param  {String} label
      * @param  {mixed}  key     Either a string for the property name or an object of values
      * @param  {mixed}  value   Value
      * @return {Promise}
