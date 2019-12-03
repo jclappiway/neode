@@ -691,6 +691,15 @@ declare namespace Neode {
      */
     findById(id: number): Promise<Node<T>>;
 
+
+    /**
+     * Find a Node by it's internal node IDs
+     *
+     * @param  {array}    ids
+     * @return {Promise}
+     */
+    findByIds(ids: number[]): Promise<Neode.NodeCollection>;
+
     /**
      * Find a Node by properties
      *
@@ -778,7 +787,7 @@ declare namespace Neode {
      * @return {Relationship}
      */
      relationship(name: string, type: string, relationship: string, direction?: Neode.Direction, target?: string | Model<T>, schema?: Neode.SchemaObject, eager?: boolean, cascade?: boolean | string): Relationship
-    
+
 
     /**
      * Get all defined Relationships  for this Model
