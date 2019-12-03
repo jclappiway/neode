@@ -768,7 +768,8 @@ declare namespace Neode {
      * Add a new relationship
      *
      * @param  {String} name                Reference of Relationship
-     * @param  {String} relationship        Internal Relationship type
+     * @param  {String} type                Internal Relationship type
+     * @param  {String} relationship        Internal Relationship name
      * @param  {String} direction           Direction of Node (Use constants DIRECTION_IN, DIRECTION_OUT, DIRECTION_BOTH)
      * @param  {String|Model|null} target   Target type definition for the
      * @param  {Object} schema              Property Schema
@@ -776,7 +777,8 @@ declare namespace Neode {
      * @param  {Bool|String} cascade        Cascade delete policy for this relationship
      * @return {Relationship}
      */
-    relationship(name: string, relationship: string, direction?: Neode.Direction, target?: string | Model<T>, schema?: Neode.SchemaObject, eager?: boolean, cascade?: boolean | string): Relationship;
+     relationship(name: string, type: string, relationship: string, direction?: Neode.Direction, target?: string | Model<T>, schema?: Neode.SchemaObject, eager?: boolean, cascade?: boolean | string): Relationship
+    
 
     /**
      * Get all defined Relationships  for this Model
