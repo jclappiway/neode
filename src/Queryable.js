@@ -111,7 +111,7 @@ export default class Queryable {
 
 
     /**
-     * Find a Node by it's internal node IDs
+     * Find Nodes by it's internal node IDs
      *
      * @param  {String} model
      * @param  {array}    ids

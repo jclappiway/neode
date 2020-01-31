@@ -227,7 +227,7 @@ declare class Neode {
   /**
    * Find a Node by it's internal node ID
    *
-   * @param  {String} model
+   * @param label
    * @param  {int}    id
    * @return {Promise}
    */
@@ -237,7 +237,7 @@ declare class Neode {
   /**
    * Find a Node by it's internal node IDs
    *
-   * @param  {String} model
+   * @param label
    * @param  {array}    ids
    * @return {Promise}
    */
@@ -693,7 +693,7 @@ declare namespace Neode {
 
 
     /**
-     * Find a Node by it's internal node IDs
+     * Find Nodes by it's internal node IDs
      *
      * @param  {array}    ids
      * @return {Promise}

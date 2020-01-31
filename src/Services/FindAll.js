@@ -12,7 +12,14 @@ export default function FindAll(neode, model, properties, order, limit, skip) {
     // Where
     if (properties) {
         Object.keys(properties).forEach(key => {
-            builder.where(`${alias}.${key}`, properties[ key ]);
+            if (typeof properties[key] === 'string') {
+                builder.where(`${alias}.${key}`, properties[ key ]);
+            } else if (typeof properties[key] === 'object') {
+                // for example: WHERE key IN [keys] :
+                Object.keys(properties[key]).forEach(function (operator) {
+                    builder.whereRaw(`${alias}.${key} ${operator} [${properties[key][operator].map( p => '"'+p+'"').join(',')}]`);
+                });
+            }
         });
     }
 
