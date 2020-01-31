@@ -10,9 +10,10 @@ declare class Neode {
    * @param  {String} username
    * @param  {String} password
    * @param  {Bool}   enterprise
+   * @param  {Object} config
    * @return {Neode}
    */
-  constructor(connection_string: string, username: string, password: string, enterprise ?: boolean);
+  constructor(connection_string: string, username: string, password: string, enterprise?: boolean, config?: object);
 
 
   /**
@@ -968,14 +969,21 @@ declare namespace Neode {
      *
      * @return Node
      */
-    from(): Node<any>;
+    startNode(): Node<any>;
 
     /**
      * Get destination node for this relationship
      *
      * @return Node
      */
-    to(): Node<any>;
+    endNode(): Node<any>;
+
+    /**
+     * Convert Relationship to Object
+     *
+     * @return {Promise}
+     */
+    toJson(): Promise<string>;
   }
 
   class Node<T> {
