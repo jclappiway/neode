@@ -18,18 +18,15 @@ export default class Neode {
      * @param  {String} username
      * @param  {String} password
      * @param  {Bool}   enterprise
-     * @param  {String} database
      * @param  {Object} config
      * @return {Neode}
      */
-    constructor(connection_string, username, password, enterprise = false, database = 'neo4j', config = {}) {
+    constructor(connection_string, username, password, enterprise = false, config = {}) {
         const auth = username && password ? neo4j.auth.basic(username, password) : null;
         this.driver = new neo4j.driver(connection_string, auth, config);
         this.models = new ModelMap(this);
         this.schema = new Schema(this);
         this.factory = new Factory(this);
-
-        this.database = database;
 
         this.setEnterprise(enterprise);
     }
@@ -48,14 +45,11 @@ export default class Neode {
         const password = process.env.NEO4J_PASSWORD;
         const enterprise = process.env.NEO4J_ENTERPRISE === 'true';
 
-        // Multi-database
-        const database = process.env.NEO4J_DATABASE || 'neo4j';
-
         // Build additional config
         const config = {};
 
         const settings = {
-            NEO4J_ENCRYPTION: 'encrypted',
+            NEO4J_ENCRYPTED: 'encrypted',
             NEO4J_TRUST: 'trust',
             NEO4J_TRUSTED_CERTIFICATES: 'trustedCertificates',
             NEO4J_KNOWN_HOSTS: 'knownHosts',
@@ -85,7 +79,7 @@ export default class Neode {
             }
         });
 
-        return new Neode(connection_string, username, password, enterprise, database, config);
+        return new Neode(connection_string, username, password, enterprise, config);
     }
 
     /**
@@ -121,15 +115,6 @@ export default class Neode {
             });
 
         return this;
-    }
-
-    /**
-     * Set the default database for all future connections
-     * 
-     * @param {String} database 
-     */
-    setDatabase(database) {
-        this.database = database;
     }
 
     /**
@@ -334,10 +319,7 @@ export default class Neode {
      * @return {Session}
      */
     readSession() {
-        return this.driver.session({
-            database: this.database,
-            defaultAccessMode: neo4j.session.READ,
-        });
+        return this.driver.session(neo4j.READ);
     }
 
     /**
@@ -346,10 +328,7 @@ export default class Neode {
      * @return {Session}
      */
     writeSession() {
-        return this.driver.session({
-            database: this.database,
-            defaultAccessMode: neo4j.session.WRITE,
-        });
+        return this.driver.session(neo4j.WRITE);
     }
 
     /**

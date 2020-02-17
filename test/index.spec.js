@@ -5,8 +5,11 @@ import Node from '../src/Node';
 import Collection from '../src/Collection';
 import Property from '../src/Property';
 import Builder from '../src/Query/Builder';
+import neo4j from 'neo4j-driver';
+import {Driver} from 'neo4j-driver/lib/v1/driver';
+import {session as nativesession} from 'neo4j-driver/lib/v1/session';
 import Relationship from '../src/Relationship';
-import { ERROR_TRANSACTION_FAILED } from '../src/TransactionError';
+import TransactionError, { ERROR_TRANSACTION_FAILED } from '../src/TransactionError';
 
 describe('index.js', () => {
     const label = 'IndexTest';
@@ -29,21 +32,19 @@ describe('index.js', () => {
     after(done => {
         instance.cypher(`MATCH (n:${label}) DETACH DELETE n`)
             .then(() => instance.close())
-            .then(() => done())
-            .catch(e => done(e));
+            .then(() => done());
     });
 
     it('should instantiate', () => {
         expect(instance).to.be.an.instanceOf(Neode);
-        // expect(instance.driver).to.be.an.instanceOf(neo4j.driver);
+        expect(instance.driver).to.be.an.instanceOf(Driver);
     });
 
     it('should instantiate with enterprise mode', () => {
-        const enterprise = new Neode('bolt://localhost:3000', 'username', 'password', true, 'defaultdb');
+        const enterprise = new Neode('bolt://localhost:3000', 'username', 'password', true);
 
         expect(enterprise).to.be.an.instanceOf(Neode);
         expect(enterprise.enterprise()).to.equal(true);
-        expect(enterprise.database).to.equal('defaultdb');
     });
 
     it('should load models using `with` and return self', () => {
@@ -104,7 +105,7 @@ describe('index.js', () => {
         it('should handle a batch of queries', (done) => {
             const queries = [
                 'MATCH (n) RETURN count(n)',
-                {query: 'MATCH (n) WHERE n.name = $name RETURN n', params: {name: 'name'}}
+                {query: 'MATCH (n) WHERE n.name = {name} RETURN n', params: {name: 'name'}}
             ];
 
             instance.batch(queries)
@@ -365,6 +366,12 @@ describe('index.js', () => {
         });
     });
 
+    describe('::close', () => {
+        it('should close the neo4j connection', () => {
+            const output = instance.close();
+        });
+    });
+
     describe('::all', () => {
         it('should return a collection of nodes', (done) => {
             instance.all(label, {}, {}, 1, 0)
@@ -462,12 +469,5 @@ describe('index.js', () => {
         //     done();
         // });
     });
-
-    // TODO: Killing queries, reinstate?
-    // describe('::close', () => {
-    //     it('should close the neo4j connection', () => {
-    //         const output = instance.close();
-    //     });
-    // });
 
 });

@@ -30,8 +30,6 @@ var _ValidationError2 = _interopRequireDefault(_ValidationError);
 
 var _neo4jDriver = require('neo4j-driver');
 
-var _neo4jDriver2 = _interopRequireDefault(_neo4jDriver);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; } /* eslint-disable no-case-declarations */
@@ -92,7 +90,7 @@ var temporal = _joi2.default.extend({
 // TODO: Ugly
 var neoInteger = _joi2.default.extend({
     // base: Joi.number(),
-    base: _joi2.default.alternatives().try([_joi2.default.number().integer(), _joi2.default.object().type(_neo4jDriver2.default.types.Integer)]),
+    base: _joi2.default.alternatives().try([_joi2.default.number().integer(), _joi2.default.object().type(_neo4jDriver.v1.types.Integer)]),
     name: 'integer',
     language: {
         before: 'Value before minimum expected value',
@@ -104,7 +102,7 @@ var neoInteger = _joi2.default.extend({
             min: _joi2.default.number()
         },
         validate: function validate(params, value, state, options) {
-            var compare = value instanceof _neo4jDriver2.default.types.Integer ? value.toNumber() : value;
+            var compare = value instanceof _neo4jDriver.v1.types.Integer ? value.toNumber() : value;
 
             if (params.min > compare) {
                 return this.createError('number.min', { limit: params.min }, state, options);
@@ -118,7 +116,7 @@ var neoInteger = _joi2.default.extend({
             max: _joi2.default.number()
         },
         validate: function validate(params, value, state, options) {
-            var compare = value instanceof _neo4jDriver2.default.types.Integer ? value.toNumber() : value;
+            var compare = value instanceof _neo4jDriver.v1.types.Integer ? value.toNumber() : value;
 
             if (params.max < compare) {
                 return this.createError('number.max', { limit: params.max }, state, options);
@@ -132,7 +130,7 @@ var neoInteger = _joi2.default.extend({
             multiple: _joi2.default.number()
         },
         validate: function validate(params, value, state, options) {
-            var compare = value instanceof _neo4jDriver2.default.types.Integer ? value.toNumber() : value;
+            var compare = value instanceof _neo4jDriver.v1.types.Integer ? value.toNumber() : value;
 
             if (compare % params.multiple != 0) {
                 return this.createError('number.multiple', { multiple: params.max }, state, options);
@@ -144,7 +142,7 @@ var neoInteger = _joi2.default.extend({
 });
 
 var point = _joi2.default.extend({
-    base: _joi2.default.object().type(_neo4jDriver2.default.types.Point),
+    base: _joi2.default.object().type(_neo4jDriver.v1.types.Point),
     name: 'point'
 });
 
@@ -205,27 +203,27 @@ function BuildValidationSchema(schema) {
                 break;
 
             case 'datetime':
-                validation = temporal.temporal().type(_neo4jDriver2.default.types.DateTime);
+                validation = temporal.temporal().type(_neo4jDriver.v1.types.DateTime);
                 break;
 
             case 'date':
-                validation = temporal.temporal().type(_neo4jDriver2.default.types.Date);
+                validation = temporal.temporal().type(_neo4jDriver.v1.types.Date);
                 break;
 
             case 'time':
-                validation = temporal.temporal().type(_neo4jDriver2.default.types.Time);
+                validation = temporal.temporal().type(_neo4jDriver.v1.types.Time);
                 break;
 
             case 'localdate':
-                validation = temporal.temporal().type(_neo4jDriver2.default.types.LocalDate);
+                validation = temporal.temporal().type(_neo4jDriver.v1.types.LocalDate);
                 break;
 
             case 'localtime':
-                validation = temporal.temporal().type(_neo4jDriver2.default.types.LocalTime);
+                validation = temporal.temporal().type(_neo4jDriver.v1.types.LocalTime);
                 break;
 
             case 'point':
-                validation = point.point().type(_neo4jDriver2.default.types.Point);
+                validation = point.point().type(_neo4jDriver.v1.types.Point);
                 break;
 
             case 'int':

@@ -1,6 +1,6 @@
 {
   "name": "neode",
-  "version": "0.666666.0",
+  "version": "0.5.0",
   "description": "Neo4j OGM for NodeJS",
   "main": "build/index.js",
   "types": "types/index.d.ts",
@@ -24,10 +24,10 @@
   "author": "Adam Cowley <github@adamcowley.co.uk>",
   "license": "MIT",
   "dependencies": {
-    "@hapi/joi": "^15.1.1",
+    "@hapi/joi": "^15.1.0",
     "dotenv": "^4.0.0",
-    "neo4j-driver": "^4.0.1",
-    "uuid": "^3.4.0"
+    "neo4j-driver": "^1.7.6",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

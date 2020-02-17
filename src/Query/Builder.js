@@ -607,9 +607,6 @@ export default class Builder {
             case mode.WRITE:
                 return this._neode.writeCypher(query, params);
 
-            case mode.READ:
-                return this._neode.readCypher(query, params);
-
             default:
                 return this._neode.cypher(query, params);
         }

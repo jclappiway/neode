@@ -88,7 +88,7 @@ function DropSchema(neode) {
         });
     });
 
-    var session = neode.writeSession();
+    var session = neode.session();
 
     return new Promise(function (resolve, reject) {
         runAsync(session, queries, resolve, reject);
