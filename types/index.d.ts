@@ -13,7 +13,7 @@ declare class Neode {
    * @param  {Object} config
    * @return {Neode}
    */
-  constructor(connection_string: string, username: string, password: string, enterprise?: boolean, database: string = 'neo4j', config?: object);
+  constructor(connection_string: string, username: string, password: string, enterprise?: boolean, config?: object);
 
 
   /**
