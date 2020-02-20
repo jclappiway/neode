@@ -27,15 +27,15 @@ function FindAll(neode, model, properties, order, limit, skip) {
     // Where
     if (properties) {
         Object.keys(properties).forEach(function (key) {
-            if (typeof properties[key] === 'string') {
-                builder.where(alias + '.' + key, properties[key]);
-            } else if (_typeof(properties[key]) === 'object') {
+            if (_typeof(properties[key]) === 'object') {
                 // for example: WHERE key IN [keys] :
                 Object.keys(properties[key]).forEach(function (operator) {
                     builder.whereRaw(alias + '.' + key + ' ' + operator + ' [' + properties[key][operator].map(function (p) {
                         return '"' + p + '"';
                     }).join(',') + ']');
                 });
+            } else {
+                builder.where(alias + '.' + key, properties[key]);
             }
         });
     }
