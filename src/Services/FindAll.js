@@ -1,7 +1,7 @@
 import Builder, {mode} from '../Query/Builder';
-import { eagerNode, } from '../Query/EagerUtils';
+import {eagerNode,} from '../Query/EagerUtils';
 
-export default function FindAll(neode, model, properties, order, limit, skip) {
+export default function FindAll (neode, model, properties, order, limit, skip) {
     const alias = 'this';
 
     const builder = new Builder(neode);
@@ -15,21 +15,26 @@ export default function FindAll(neode, model, properties, order, limit, skip) {
             if (typeof properties[key] === 'object') {
                 // for example: WHERE key IN [keys] :
                 Object.keys(properties[key]).forEach(function (operator) {
-                    builder.whereRaw(`${alias}.${key} ${operator} [${properties[key][operator].map( p => '"'+p+'"').join(',')}]`);
+                    if (operator.toLowerCase() === 'in') {
+                        builder.whereRaw(`${alias}.${key} ${operator} [${properties[key][operator].map(p => '"' + p + '"').join(',')}]`);
+                    } else if (operator === 'CONTAINS') {
+                        builder.whereRaw(`toLower(${alias}.${key}) ${operator} toLower('${properties[key][operator]}')`);
+                    } else {
+                        builder.whereRaw(`${alias}.${key} ${operator} '${properties[key][operator]}'`);
+                    }
                 });
-            }else{
-                builder.where(`${alias}.${key}`, properties[ key ]);
-	    }
+            } else {
+                builder.where(`${alias}.${key}`, properties[key]);
+            }
         });
     }
 
     // Order
     if (typeof order == 'string') {
         builder.orderBy(`${alias}.${order}`);
-    }
-    else if (typeof order == 'object') {
+    } else if (typeof order == 'object') {
         Object.keys(order).forEach(key => {
-            builder.orderBy(`${alias}.${key}`, order[ key ]);
+            builder.orderBy(`${alias}.${key}`, order[key]);
         });
     }
 

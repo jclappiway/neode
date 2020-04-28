@@ -30,9 +30,15 @@ function FindAll(neode, model, properties, order, limit, skip) {
             if (_typeof(properties[key]) === 'object') {
                 // for example: WHERE key IN [keys] :
                 Object.keys(properties[key]).forEach(function (operator) {
-                    builder.whereRaw(alias + '.' + key + ' ' + operator + ' [' + properties[key][operator].map(function (p) {
-                        return '"' + p + '"';
-                    }).join(',') + ']');
+                    if (operator.toLowerCase() === 'in') {
+                        builder.whereRaw(alias + '.' + key + ' ' + operator + ' [' + properties[key][operator].map(function (p) {
+                            return '"' + p + '"';
+                        }).join(',') + ']');
+                    } else if (operator === 'CONTAINS') {
+                        builder.whereRaw('toLower(' + alias + '.' + key + ') ' + operator + ' toLower(\'' + properties[key][operator] + '\')');
+                    } else {
+                        builder.whereRaw(alias + '.' + key + ' ' + operator + ' \'' + properties[key][operator] + '\'');
+                    }
                 });
             } else {
                 builder.where(alias + '.' + key, properties[key]);
